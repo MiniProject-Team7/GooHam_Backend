@@ -1,0 +1,1 @@
+package com.uplus.ureka.domain.participation;

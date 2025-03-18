@@ -7,12 +7,12 @@ import org.springframework.http.HttpStatus;
 public class CustomExceptions extends RuntimeException {
     private final HttpStatus status;
 
-    public CustomException(String message) {
+    public CustomExceptions(String message) {
         super(message);
         this.status = HttpStatus.BAD_REQUEST; // 기본 상태 코드
     }
 
-    public CustomException(String message, HttpStatus status) {
+    public CustomExceptions(String message, HttpStatus status) {
         super(message);
         this.status = status;
     }

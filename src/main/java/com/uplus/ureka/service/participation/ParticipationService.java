@@ -21,19 +21,19 @@ public class ParticipationService {
         Long postId = requestDTO.getPostId();
         // 사용자 확인
         if(!participationMapper.checkUserExists(userId)){
-            throw new CustomException("존재하지 않는 회원입니다.");
+            throw new CustomExceptions("존재하지 않는 회원입니다.");
         }
         // 게시물 확인
         if (!participationMapper.checkExistPost(postId)) {
-            throw new CustomException("해당 게시글이 존재하지 않습니다.");
+            throw new CustomExceptions("해당 게시글이 존재하지 않습니다.");
         }
         // 중복 신청 확인
         if (participationMapper.checkExistParticipation(userId, postId)) {
-            throw new CustomException("이미 신청한 게시글입니다.");
+            throw new CustomExceptions("이미 신청한 게시글입니다.");
         }
         // 모집 가능 확인
         if (!participationMapper.checkPostStatusValid(postId) || !participationMapper.checkPersonAvailable(postId)) {
-            throw new CustomException("현재 모집이 불가능한 상태입니다.");
+            throw new CustomExceptions("현재 모집이 불가능한 상태입니다.");
         }
 
         // DTO를 전달하여 applyParticipation 호출
@@ -85,8 +85,8 @@ public class ParticipationService {
             throw new IllegalStateException("최대 인원을 초과하여 승인할 수 없습니다.");
         }
         participationMapper.approveParticipation(userId, postId);
+        //알림 추가 필요
         participationMapper.increaseCurrentPerson(postId);
-        participationMapper.deleteFromParticipationQueue(userId, postId);
     }
 
     public void rejectParticipation(ParticipationRequestDTO requestDTO) {

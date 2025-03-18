@@ -12,8 +12,8 @@ import jakarta.servlet.http.HttpServletRequest;
 public class GlobalExceptionHandler {
 
     // CustomException
-    @ExceptionHandler(CustomException.class)
-    public ResponseEntity<CustomResponseDTO<Object>> handleCustomException(CustomException ex, HttpServletRequest request) {
+    @ExceptionHandler(CustomExceptions.class)
+    public ResponseEntity<CustomResponseDTO<Object>> handleCustomException(CustomExceptions ex, HttpServletRequest request) {
         return ResponseEntity.badRequest()
                 .body(new CustomResponseDTO<>(
                         "error",

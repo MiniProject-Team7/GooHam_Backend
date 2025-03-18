@@ -61,7 +61,7 @@ public interface ParticipationMapper {
     @Delete("DELETE FROM POST_PARTICIPANTS " +
             "WHERE USER_ID = #{userId} " +
             "AND POST_ID = #{postId} " +
-            "AND (STATUS = '승인' OR STATUS = '대기')")
+            "AND (STATUS = '거절')")
     void deleteFromParticipationQueue(@Param("userId") Long userId, @Param("postId") Long postId);
 
     // 특정 게시글의 전체 참여 현황 조회 (SELECT)

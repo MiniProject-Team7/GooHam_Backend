@@ -1,5 +1,8 @@
 <mapper namespace="com.uplus.ureka.repository.participation.ParticipationMapper">
-
+    <!-- 사용자 존재 확인 -->
+    <select id="checkExistUsers" resultType ="boolean">
+        SELECT EXISTS (SELECT 1 FROM USERS WHERE ID = #{userId})
+    </select>
     <!-- 신청 글 존재 확인 -->
     <select id="checkExistParticipation" resultType="boolean">
         SELECT EXISTS (SELECT 1 FROM POST_PARTICIPANTS WHERE USER_ID = #{userId}

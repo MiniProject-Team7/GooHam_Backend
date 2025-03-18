@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ParticipationResponseDTO {
+    private Long id;
     private Long userId;
     private Long postId;
     private String nickname;

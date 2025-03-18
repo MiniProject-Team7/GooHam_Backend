@@ -1,0 +1,81 @@
+<mapper namespace="com.uplus.ureka.repository.notification.NotificationMapper">
+
+    <!--게시글 존재 여부 확인 -->
+    <select id="checkPostExists" resultType="boolean">
+        SELECT EXISTS (SELECT 1 FROM POSTS WHERE id = #{postId})
+    </select>
+
+    <!-- 댓글 존재 여부 확인 -->
+    <select id="checkCommentExists" resultType="boolean">
+        SELECT EXISTS (SELECT 1 FROM COMMENTS WHERE post_id = #{postId})
+    </select>
+
+    <!-- 중복 신청 방지 -->
+    <select id="checkDuplicateRequest" resultType="boolean">
+        SELECT EXISTS (
+        SELECT 1 FROM notifications
+        WHERE post_id = #{postId} AND participant_id = #{participantId} AND type = #{type}
+        )
+    </select>
+
+    <!-- 신청 알림 발송 -->
+    <insert id="createNotificationForRequest" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO notifications (user_id, post_id, post_user_id, participant_id, type, created_at)
+        VALUES (#{userId}, #{postId}, #{postUserId}, #{participantId}, #{type}, NOW())
+    </insert>
+
+    <!-- 댓글 알림 발송 -->
+    <insert id="createNotificationForComment" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO notifications (user_id, post_id, post_user_id, participant_id, type, created_at)
+        VALUES (#{userId}, #{postId}, #{postUserId}, #{participantId}, #{type}, NOW())
+    </insert>
+
+
+
+    <!-- 승인 알림 발송 -->
+    <insert id="createNotificationForApproval" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO notifications (user_id, post_id, post_user_id, participant_id, type, created_at)
+        VALUES (#{userId}, #{postId}, #{postUserId}, #{participantId}, #{type}, NOW())
+    </insert>
+
+    <!-- 거절 알림 발송 -->
+    <insert id="createNotificationForRejection" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO notifications (user_id, post_id, post_user_id, participant_id, type, created_at)
+        VALUES (#{userId}, #{postId}, #{postUserId}, #{participantId}, #{type}, NOW())
+    </insert>
+
+    <!-- 읽음 처리 -->
+    <update id="updateNotification">
+        UPDATE notifications
+        SET is_read = 1
+        WHERE id = #{id} AND user_id = #{userId}
+    </update>
+
+    <!-- 읽은 알림 제거-->
+    <delete id="deleteNotifications">
+        DELETE FROM notifications
+        WHERE is_read = true AND user_id = #{user_id}
+    </delete>
+
+    <!-- 알림 조회 쿼리 -->
+    <select id="getNotifications" resultType="Notification">
+    SELECT
+    id,
+    user_id,
+    post_id,
+    post_user_id,
+    participant_id,
+    type,
+    is_read,
+    created_at
+    FROM notifications
+    WHERE user_id = #{userId}
+    <if test="isRead != null">
+        AND is_read = #{isRead}
+    </if>
+    <if test="type != null">
+        AND type = #{type}
+    </if>
+    ORDER BY created_at DESC
+    </select>
+</mapper>

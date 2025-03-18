@@ -1,1 +1,0 @@
-package com.uplus.ureka.repository.participation;

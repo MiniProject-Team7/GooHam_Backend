@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Data
-public class NotificationDTO implements Serializable {
+public class NotificationResponseDTO implements Serializable {
     private Long id;
     private Long userId;
     private Long postId;
@@ -17,5 +17,3 @@ public class NotificationDTO implements Serializable {
     private LocalDateTime createdAt;
 
 }
-
-

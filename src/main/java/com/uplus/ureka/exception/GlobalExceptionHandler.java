@@ -23,6 +23,8 @@ public class GlobalExceptionHandler {
                 ));
     }
 
+
+
     // General
     @ExceptionHandler(Exception.class)
     public ResponseEntity<CustomResponseDTO<Object>> handleGeneralException(Exception ex, HttpServletRequest request) {

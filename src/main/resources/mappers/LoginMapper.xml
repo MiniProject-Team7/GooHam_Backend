@@ -12,4 +12,16 @@
     <select id="findByUsername2" resultType="com.uplus.ureka.dto.user.member.MemberDTO">
         SELECT * FROM USERS WHERE member_email  = #{member_email}
     </select>
+
+    <update id="updateVerificationCode">
+        UPDATE USERS
+        SET verificationCode = #{token}
+        WHERE member_email = #{member_email}
+    </update>
+
+    <update id="clearVerificationCode">
+        UPDATE USERS
+        SET verificationCode = NULL
+        WHERE member_email = #{member_email}
+    </update>
 </mapper>

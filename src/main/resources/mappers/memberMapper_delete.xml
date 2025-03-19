@@ -4,15 +4,15 @@
 <mapper namespace="com.uplus.ureka.repository.user.delete.MemberMapper_delete">
 
     <update id="deleteByIdAndPassword">
-        UPDATE USERS SET delflag = 1 WHERE member_id = #{id} AND member_password = #{password}
+        UPDATE USERS SET delflag = 1 WHERE member_email = #{email} AND member_password = #{password}
     </update>
 
     <select id="findUserById" resultType="string">
-        SELECT member_id FROM USERS WHERE member_id = #{id}
+        SELECT member_email USERS FROM USERS WHERE member_email = #{email}
     </select>
 
     <select id="getPasswordById" resultType="string">
-        SELECT member_password FROM USERS WHERE member_id = #{id}
+        SELECT member_password FROM USERS WHERE member_email = #{email}
     </select>
 
 </mapper>

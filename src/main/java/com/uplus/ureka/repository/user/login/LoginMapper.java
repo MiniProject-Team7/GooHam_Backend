@@ -19,4 +19,8 @@ public interface LoginMapper {
     LoginDTO findByUsername(@Param("member_email") String username);
 
     MemberDTO findByUsername2(@Param("member_email") String username);
+
+    void updateVerificationCode(@Param("member_email") String email, @Param("token") String token);
+
+    void clearVerificationCode(@Param("member_email") String email);
 }

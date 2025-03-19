@@ -1,5 +1,6 @@
 package com.uplus.ureka.service.user.password;
 
+import com.uplus.ureka.exception.CustomExceptions;
 import com.uplus.ureka.repository.user.password.MemberMapper_Pass;
 import org.springframework.stereotype.Service;
 
@@ -23,13 +24,13 @@ public class MemberService_pass {
 
     public String verifyCodeAndGetPassword(String email, int code){
         if (emailNotExist(email)) {
-            throw new IllegalArgumentException("Email not found");
+            throw new CustomExceptions("Email not found");
         }
 
         String password = mapper.getPasswordByEmailAndVerification(email,code);
 
         if (password == null) {
-            throw new IllegalArgumentException("Invalid verification code");
+            throw new CustomExceptions("Invalid verification code");
         }
 
         return password;

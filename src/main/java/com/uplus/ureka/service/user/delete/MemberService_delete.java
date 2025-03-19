@@ -14,23 +14,23 @@ public class MemberService_delete {
         this.mapper = mapper;
     }
 
-    public String deleteAccount(String id, String password){
-        if (accountNotExist(id)) {
+    public String deleteAccount(String email, String password){
+        if (accountNotExist(email)) {
             throw new IllegalArgumentException("현재 아이디로 가입된 계정이 없습니다. 다시 아이디를 확인해주세요");
         }
 
-        if (!verifyPassword(id, password)) {
+        if (!verifyPassword(email, password)) {
             throw new IllegalArgumentException("현재 패스워드가 일치하지 않습니다. 다시 입력해주세요.");
         }
 
-        mapper.deleteByIdAndPassword(id, password);
+        mapper.deleteByIdAndPassword(email, password);
 
         return "계정이 성공적으로 삭제되었습니다.";
     }
 
-    private boolean verifyPassword(String id,String password){
+    private boolean verifyPassword(String email,String password){
         // 현재 패스워드가 맞는지 확인하는 코드 작성
-        String passwordFromDB = mapper.getPasswordById(id);
+        String passwordFromDB = mapper.getPasswordById(email);
 
         if(passwordFromDB == null) {
             throw new IllegalArgumentException("현재 아이디와 비밀번호가 일치하지 않습니다.");
@@ -39,9 +39,9 @@ public class MemberService_delete {
         return password.equals(passwordFromDB);
     }
 
-    private boolean accountNotExist(String id) {
+    private boolean accountNotExist(String email) {
         // 아이디가 존재하는지 확인하는 코드 작성
 
-        return mapper.findUserById(id) == null;
+        return mapper.findUserById(email) == null;
     }
 }

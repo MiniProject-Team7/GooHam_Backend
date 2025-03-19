@@ -5,6 +5,7 @@ import com.uplus.ureka.exception.CustomExceptions;
 import com.uplus.ureka.exception.LoginException;
 import com.uplus.ureka.jwt.JwtUtils;
 import com.uplus.ureka.service.user.login.LoginService;
+import com.uplus.ureka.service.user.login.LoginServiceImpl;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,8 @@ public class LoginController {
     // JWT 토큰 생성을 위해 필요
     @Autowired
     private JwtUtils jwtUtils;
+    @Autowired
+    private LoginServiceImpl loginServiceImpl;
 
 
     @PostMapping("/login")
@@ -44,6 +47,9 @@ public class LoginController {
 
             // JWT 토큰 생성 및 반환
             String jwt = jwtUtils.createAccessToken(authenticatedMember.getMember_email(), authenticatedMember.getMember_name());
+
+            // 여기에 토큰 저장 코드 추가
+            loginServiceImpl.saveVerificationToken(authenticatedMember.getMember_email(), jwt);
 
             // 원하는 응답 형식으로 구성
             Map<String, Object> userData = new HashMap<>();
@@ -82,6 +88,9 @@ public class LoginController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
         }
         catch(Exception e){
+            e.printStackTrace(); // 콘솔에 전체 스택 트레이스 출력
+            System.out.println("로그인 오류 상세: " + e.getMessage()); // 간략한 메시지 출력
+
             // 서버 오류 형식 맞춤
             Map<String, Object> response = new HashMap<>();
             response.put("status", "error");
@@ -106,6 +115,35 @@ public class LoginController {
     @GetMapping("test")
     public String test() {
         return "토큰 테스트";
+    }
+
+    // 로그아웃
+    @PostMapping("/logout")
+    public ResponseEntity<?> logoutUser(@RequestBody Map<String, String> request) {
+        try {
+            String email = request.get("member_email");
+
+            // 토큰 삭제
+            loginServiceImpl.logout(email);
+
+            // 응답 생성
+            Map<String, Object> response = new HashMap<>();
+            response.put("status", "success");
+            response.put("message", "로그아웃 성공");
+            response.put("data", null);
+
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            e.printStackTrace();
+
+            // 오류 응답
+            Map<String, Object> response = new HashMap<>();
+            response.put("status", "error");
+            response.put("message", "로그아웃 중 오류 발생: " + e.getMessage());
+            response.put("data", null);
+
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
     }
 
 }

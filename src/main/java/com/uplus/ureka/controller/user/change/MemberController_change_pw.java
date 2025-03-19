@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Controller
-@RequestMapping("/gooham")
+@RequestMapping("/gooham/users")
 public class MemberController_change_pw {
 
     private final MemberService_change_pw memberServiceChangePw;
@@ -42,7 +42,7 @@ public class MemberController_change_pw {
     @PostMapping("/change_password")
     @ResponseBody
     public Map<String, String> changePassword(@RequestBody Map<String, Object> payload) {
-        String email = (String) payload.get("email");
+        String email = (String) payload.get("member_email");
         String currentPassword = (String) payload.get("currentPassword");
         String newPassword = (String) payload.get("newPassword");
 

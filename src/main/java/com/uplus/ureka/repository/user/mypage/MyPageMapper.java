@@ -2,7 +2,10 @@ package com.uplus.ureka.repository.user.mypage;
 
 import com.uplus.ureka.dto.user.Mypage.MyPageDTO;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 @Mapper
@@ -15,8 +18,16 @@ public interface MyPageMapper {
 //    int updateProfileImageByMemberId(String memberId, byte[] profileImage);
     int updateProfileImage(MyPageDTO myPageDTO);
 
-    // 회원 정보 수정(두개의 테이블 업데이트로 인해 2번)
+    // 회원 정보 수정(관심사 업데이트 경우 관심사 삭제하고 다시 insert)
     int updateMemberInfo(MyPageDTO memberInfo);
+
+    // 회원의 관심사 목록 조회
+    List<Integer> getMemberInterests(@Param("userId") String userId);
+
+    // 관심사 추가
+    void insertMemberInterests(@Param("userId") String userId, @Param("categoryId") Integer categoryId);
+    // 특정 관심사 삭제
+    void deleteSpecificMemberInterest(@Param("userId") String userId, @Param("categoryId") Integer categoryId);
 //    int updateMemberInfoDetail(MyPageDTO memberInfo);
 
     // 네비게이션에 이미지 띄우기

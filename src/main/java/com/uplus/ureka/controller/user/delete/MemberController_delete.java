@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Controller
-@RequestMapping("/gooham")
+@RequestMapping("/gooham/users")
 public class MemberController_delete {
 
     private final MemberService_delete memberServiceDelete;
@@ -28,11 +28,11 @@ public class MemberController_delete {
     @PostMapping("/delete_account")
     @ResponseBody
     public ResponseEntity<?> deleteAccount(@RequestBody Map<String, Object> payload) {
-        String id = (String) payload.get("id");
+        String email = (String) payload.get("email");
         String password = (String) payload.get("password");
 
         try {
-            memberServiceDelete.deleteAccount(id, password);
+            memberServiceDelete.deleteAccount(email, password);
             return ResponseEntity.ok(Map.of(
                     "success", true,
                     "message", "계정이 성공적으로 삭제되었습니다."

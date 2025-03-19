@@ -6,7 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 public interface MyPageService {
 
     // 특정 회원의 상세 정보
-    MyPageDTO getMemberDetails(String memberId);
+    MyPageDTO getMemberDetails(String member_email);
 
     // 회원의 프로필 이미지를 업데이트
     String updateProfileImage(String memberId, MultipartFile profileImage);

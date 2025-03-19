@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Controller
-@RequestMapping("/gooham")
+@RequestMapping("/gooham/users")
 public class MemberController_id {
 
     private final MemberService_id memberServiceId;

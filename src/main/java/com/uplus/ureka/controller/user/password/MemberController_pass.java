@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.Random;
 
 @Controller
-@RequestMapping("/gooham")
+@RequestMapping("/gooham/users")
 public class MemberController_pass {
 
     private final MemberService_pass memberServicePass;

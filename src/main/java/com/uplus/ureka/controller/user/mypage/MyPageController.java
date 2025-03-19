@@ -12,7 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 @RestController
-@RequestMapping("/gooham/mypage")
+@RequestMapping("/gooham/users/mypage")
 public class MyPageController {
 
     @Autowired
@@ -24,12 +24,12 @@ public class MyPageController {
 
     //회원 상세 페이지
     // memberId 파라미터를 받아 해당 회원의 상세 정보 페이지를 반환
-    @GetMapping("/{memberId}/detail")
-    public ResponseEntity<MyPageDTO> selectMemberDetailsById(@PathVariable String memberId){
+    @GetMapping("/detail")
+    public ResponseEntity<MyPageDTO> selectMemberDetailsById(@RequestParam String member_email){
         System.out.println("=================================");
-        System.out.println("memberId:" + memberId);
+        System.out.println("member_email:" + member_email);
         // 서비스를 통해 회원의 상세 정보를 가져옴
-        MyPageDTO memberDetails = myPageServicelmpl.getMemberDetails(memberId);
+        MyPageDTO memberDetails = myPageServicelmpl.getMemberDetails(member_email);
         return ResponseEntity.ok(memberDetails);
     }
 
@@ -59,12 +59,21 @@ public class MyPageController {
 
     // 회원의 상세 정보를 업데이트하는 로직을 처리
     @PostMapping("/updateInfo")
-    public String updateMemberInfo(@RequestBody MyPageDTO memberInfo) {
+    public ResponseEntity<CommonResponseDTO> updateMemberInfo(@RequestBody MyPageDTO memberInfo) {
         System.out.println("---------------------------------");
         System.out.println("memberInfo:" + memberInfo);
         myPageServicelmpl.updateMemberInfo(memberInfo);
-        return "redirect:/mypage/detail?memberId=" + memberInfo.getMember_id();
+       //MyPageDTO updatedMember = myPageServicelmpl.updateMemberInfo(memberInfo);
+        //return "redirect:/mypage/detail?memberId=" + memberInfo.getMember_email();
+        return ResponseEntity.ok(new CommonResponseDTO("success", "회원 정보가 성공적으로 업데이트되었습니다."));
     }
+
+    // 프로필 이미지 조회 (member_email로 검색)
+//    @GetMapping("/image")
+//    public ResponseEntity<String> getProfileImage(@RequestParam String member_email) {
+//        String imageUrl = myPageService.getProfileImageByMemberEmail(member_email);
+//        return ResponseEntity.ok(imageUrl);
+//    }
 
     //네비게이션 바 이미지 띄우기
     @GetMapping("/{memberId}/image")

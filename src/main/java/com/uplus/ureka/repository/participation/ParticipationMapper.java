@@ -5,6 +5,7 @@ import java.util.*;
 import com.uplus.ureka.dto.participation.ParticipationRequestDTO;
 import org.apache.ibatis.annotations.*;
 import com.uplus.ureka.dto.participation.ParticipationResponseDTO;
+import org.apache.ibatis.session.RowBounds;
 
 @Mapper
 public interface ParticipationMapper {
@@ -60,7 +61,7 @@ public interface ParticipationMapper {
     @Delete("DELETE FROM POST_PARTICIPANTS " +
             "WHERE USER_ID = #{userId} " +
             "AND POST_ID = #{postId} " +
-            "AND (STATUS = '승인' OR STATUS = '대기')")
+            "AND (STATUS = '거절')")
     void deleteFromParticipationQueue(@Param("userId") Long userId, @Param("postId") Long postId);
 
     // 특정 게시글의 전체 참여 현황 조회 (SELECT)
@@ -71,7 +72,10 @@ public interface ParticipationMapper {
             "JOIN POSTS PO ON P.POST_ID = PO.ID " +
             "WHERE P.POST_ID = #{postId} " +
             "ORDER BY P.JOINED_AT ASC")
-    List<ParticipationResponseDTO> findAllParticipantsByPostId(@Param("postId") Long postId);
+    List<ParticipationResponseDTO> findAllParticipantsByPostId(@Param("postId") Long postId, RowBounds rowBounds);
+
+    @Select("SELECT COUNT(*) FROM POST_PARTICIPANTS WHERE POST_ID = #{postId}")
+    long countParticipantsByPostId(@Param("postId") Long postId);
 
     // 특정 사용자의 참여 신청 현황 조회 (SELECT)
     @Select("SELECT P.USER_ID AS userId, P.POST_ID AS postId, U.NICKNAME, PO.TITLE, " +

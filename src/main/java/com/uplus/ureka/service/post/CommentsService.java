@@ -19,7 +19,7 @@ import java.util.List;
 @Transactional
 
 public class CommentsService {
-    private final ContentsMapper contentsMapper;
+    private final CommentsMapper commentsMapper;
 
     //댓글 작성
     public CommentsResponseDTO createComment(CommentsRequestDTO requestDTO){
@@ -27,9 +27,9 @@ public class CommentsService {
         Long userId = requestDTO.getUserId();
         String content = requestDTO.getContent();
 
-        contentsMapper.createComment(requestDTO);
+        commentsMapper.createComment(requestDTO);
 
-        CommentsResponseDTO responseDTO = contentsMapper.findCommentwithCommentId(requestDTO.getCommentId());
+        CommentsResponseDTO responseDTO = commentsMapper.findCommentwithCommentId(requestDTO.getCommentId());
         return responseDTO;
     }
 
@@ -40,8 +40,8 @@ public class CommentsService {
         Long commentId = requestDTO.getCommentId();
         String content = requestDTO.getContent();
 
-        contentsMapper.updateComment(commentId, postId, userId, content);
-        CommentsResponseDTO responseDTO = contentsMapper.findCommentwithCommentId(commentId);
+        commentsMapper.updateComment(commentId, postId, userId, content);
+        CommentsResponseDTO responseDTO = commentsMapper.findCommentwithCommentId(commentId);
         return responseDTO;
     }
 
@@ -51,7 +51,7 @@ public class CommentsService {
         Long userId = requestDTO.getUserId();
         Long commentId = requestDTO.getCommentId();
 
-        contentsMapper.deleteComment(commentId, postId, userId);
+        commentsMapper.deleteComment(commentId, postId, userId);
     }
 
     //댓글 목록 조회
@@ -66,7 +66,7 @@ public class CommentsService {
         long totalElements = commentsMapper.countCommentsByPostId(postId);
 
         // 3. 페이징 응답 객체 생성 및 반환
-        Page<CommentsResponseDTO> page = new PageImpl<>(participants, pageable, totalElements);
+        Page<CommentsResponseDTO> page = new PageImpl<>(comments, pageable, totalElements);
         return new PageResponseDTO<>(page);
     }
 }

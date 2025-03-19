@@ -2,6 +2,7 @@ package com.uplus.ureka.repository.post;
 
 import java.util.*;
 import com.uplus.ureka.dto.post.CommentsResponseDTO;
+import com.uplus.ureka.dto.post.CommentsRequestDTO;
 import org.apache.ibatis.annotations.*;
 import com.uplus.ureka.dto.participation.ParticipationResponseDTO;
 import org.apache.ibatis.session.RowBounds;
@@ -21,9 +22,7 @@ public interface CommentsMapper {
     @Insert("INSERT INTO COMMENTS (post_id, user_id, content, created_at, updated_at) " +
             "VALUES (#{postId}, #{userId}, #{content}, NOW(), NOW())")
     @Options(useGeneratedKeys = true, keyProperty = "commentId", keyColumn = "id")
-    void createComment(@Param("postId") Long postId,
-                      @Param("userId") Long userId,
-                      @Param("content") String content);
+    void createComment(CommentsRequestDTO requestDTO);
 
     // 댓글 수정하기
     @Update("UPDATE COMMENTS SET CONTENT = #{content}, UPDATED_AT = NOW(), IS_MODIFIED = 1 WHERE ID = #{commentId} AND POST_ID = #{postId} AND USER_ID = #{userId}")

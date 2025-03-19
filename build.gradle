@@ -37,6 +37,29 @@ dependencies {
 	testImplementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter-test:3.0.4'
 	testImplementation 'org.springframework.security:spring-security-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+	// Spring Boot Security
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'com.google.code.gson:gson:2.8.9'
+
+	// jwt
+	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
+	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5' // for Jackson JSON parser
+
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	implementation 'jakarta.annotation:jakarta.annotation-api:2.1.1'
+	implementation 'jakarta.servlet:jakarta.servlet-api:6.0.0'
+
+
+	// 이메일
+	//implementation group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: '3.0.5'
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
+	implementation 'javax.mail:javax.mail-api:1.6.2'
+	implementation group: 'com.sun.mail', name: 'javax.mail', version: '1.6.2'
+
+	// swagger
+	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.7.0'
 }
 
 tasks.named('test') {

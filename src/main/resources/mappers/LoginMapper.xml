@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- UserMapper.xml -->
+<mapper namespace="com.uplus.ureka.repository.user.login.LoginMapper">
+    <select id="findByUsername" resultType="com.uplus.ureka.dto.user.login.LoginDTO">
+        SELECT member_email, member_password, delflag FROM USERS WHERE member_email  = #{member_email}
+    </select>
+
+    <select id="findByUsername2" resultType="com.uplus.ureka.dto.user.member.MemberDTO">
+        SELECT * FROM USERS WHERE member_email  = #{member_email}
+    </select>
+</mapper>

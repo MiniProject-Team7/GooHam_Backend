@@ -51,4 +51,7 @@ public interface CommentsMapper {
             "LEFT JOIN USERS U ON C.USER_ID = U.ID\n" +
             "WHERE C.ID = #{commentId}\n")
     CommentsResponseDTO findCommentwithCommentId(@Param("commentId") Long commentId);
+
+    @Select("SELECT USER_ID AS POST_USER_ID FROM POSTS WHERE ID = #{postId}")
+    long getPostOwnerId(@Param("postId") Long postId);
 }

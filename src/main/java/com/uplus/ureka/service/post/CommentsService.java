@@ -4,7 +4,10 @@ import com.uplus.ureka.dto.PageResponseDTO;
 import com.uplus.ureka.exception.CustomExceptions;
 import com.uplus.ureka.dto.post.CommentsRequestDTO;
 import com.uplus.ureka.dto.post.CommentsResponseDTO;
+import com.uplus.ureka.dto.notification.NotificationRequestDTO;
+import com.uplus.ureka.dto.notification.NotificationType;
 import com.uplus.ureka.repository.post.CommentsMapper;
+import com.uplus.ureka.service.notification.NotificationService;
 import lombok.RequiredArgsConstructor;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.data.domain.Page;
@@ -20,6 +23,7 @@ import java.util.List;
 
 public class CommentsService {
     private final CommentsMapper commentsMapper;
+    private final NotificationService notificationService;
 
     //댓글 작성
     public CommentsResponseDTO createComment(CommentsRequestDTO requestDTO){
@@ -28,6 +32,18 @@ public class CommentsService {
         String content = requestDTO.getContent();
 
         commentsMapper.createComment(requestDTO);
+
+        //댓글 추가 알림
+        NotificationRequestDTO RequestDTO = new NotificationRequestDTO(
+                null,
+                commentsMapper.getPostOwnerId(postId),
+                postId,
+                commentsMapper.getPostOwnerId(postId),
+                userId,
+                NotificationType.댓글
+        );
+
+        notificationService.createNotification(RequestDTO);
 
         CommentsResponseDTO responseDTO = commentsMapper.findCommentwithCommentId(requestDTO.getCommentId());
         return responseDTO;
@@ -40,15 +56,6 @@ public class CommentsService {
         Long commentId = id;  // 여기서 null인지 확인
         String content = requestDTO.getContent();
 
-        // 🚨 디버깅 로그 추가
-        System.out.println("🔍 postId: " + postId);
-        System.out.println("🔍 userId: " + userId);
-        System.out.println("🔍 commentId: " + commentId); // null인지 확인
-        System.out.println("🔍 content: " + content);
-
-        if (commentId == null) {
-            throw new IllegalArgumentException("Error: commentId cannot be null.");
-        }
 
         commentsMapper.updateComment(commentId, postId, userId, content);
         CommentsResponseDTO responseDTO = commentsMapper.findCommentwithCommentId(commentId);

@@ -65,7 +65,7 @@ public interface ParticipationMapper {
     void deleteFromParticipationQueue(@Param("userId") Long userId, @Param("postId") Long postId);
 
     // 특정 게시글의 전체 참여 현황 조회 (SELECT)
-    @Select("SELECT P.USER_ID AS userId, P.POST_ID AS postId, U.NICKNAME, PO.TITLE, " +
+    @Select("SELECT P.USER_ID AS userId, P.POST_ID AS postId, U.MEMBER_NICKNAME AS USERNAME, PO.TITLE, " +
             "P.STATUS, P.JOINED_AT AS joinedAt " +
             "FROM POST_PARTICIPANTS P " +
             "JOIN USERS U ON P.USER_ID = U.ID " +
@@ -78,11 +78,14 @@ public interface ParticipationMapper {
     long countParticipantsByPostId(@Param("postId") Long postId);
 
     // 특정 사용자의 참여 신청 현황 조회 (SELECT)
-    @Select("SELECT P.USER_ID AS userId, P.POST_ID AS postId, U.NICKNAME, PO.TITLE, " +
+    @Select("SELECT P.USER_ID AS userId, P.POST_ID AS postId, U.MEMBER_NICKNAME AS USERNAME, PO.TITLE, " +
             "P.STATUS, P.JOINED_AT AS joinedAt " +
             "FROM POST_PARTICIPANTS P " +
             "JOIN USERS U ON P.USER_ID = U.ID " +
             "JOIN POSTS PO ON P.POST_ID = PO.ID " +
             "WHERE P.USER_ID = #{userId} AND P.POST_ID = #{postId}")
     ParticipationResponseDTO findUserParticipationStatus(@Param("userId") Long userId, @Param("postId") Long postId);
+
+    @Select("SELECT USER_ID AS POST_USER_ID FROM POSTS WHERE ID = #{postId}")
+    long getPostOwnerId(@Param("postId") Long postId);
 }

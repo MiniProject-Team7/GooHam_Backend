@@ -1,6 +1,9 @@
 package com.uplus.ureka.service.participation;
 
 import com.uplus.ureka.dto.PageResponseDTO;
+import com.uplus.ureka.dto.notification.NotificationType;
+import com.uplus.ureka.dto.notification.NotificationRequestDTO;
+import com.uplus.ureka.service.notification.NotificationService;
 import com.uplus.ureka.exception.CustomExceptions;
 import com.uplus.ureka.dto.participation.ParticipationRequestDTO;
 import com.uplus.ureka.dto.participation.ParticipationResponseDTO;
@@ -19,6 +22,7 @@ import java.util.List;
 @Transactional
 public class ParticipationService {
     private final ParticipationMapper participationMapper;
+    private final NotificationService notificationService;
 
     // 참여 신청
     public ParticipationResponseDTO applyParticipation(ParticipationRequestDTO requestDTO) {
@@ -44,6 +48,17 @@ public class ParticipationService {
         // DTO를 전달하여 applyParticipation 호출
         participationMapper.applyParticipation(requestDTO);
 
+        // 추가로 게시물 주인한테 알림 필요함.
+        NotificationRequestDTO RequestDTO = new NotificationRequestDTO(
+                null,
+                participationMapper.getPostOwnerId(postId),
+                postId,
+                participationMapper.getPostOwnerId(postId),
+                userId,
+                NotificationType.신청
+        );
+
+        notificationService.createNotification(RequestDTO);
         // 생성된 participantId를 확인
         ParticipationResponseDTO responseDTO = participationMapper.findUserParticipationStatus(userId, postId);
 
@@ -93,6 +108,17 @@ public class ParticipationService {
 
         participationMapper.approveParticipation(userId, postId);
         //알림 추가 필요
+        NotificationRequestDTO RequestDTO = new NotificationRequestDTO(
+                null,
+                userId,
+                postId,
+                participationMapper.getPostOwnerId(postId),
+                userId,
+                NotificationType.승인
+        );
+
+        notificationService.createNotification(RequestDTO);
+
         participationMapper.increaseCurrentPerson(postId);
         return responseDTO;
     }
@@ -114,6 +140,17 @@ public class ParticipationService {
         }
         participationMapper.rejectParticipation(requestDTO.getUserId(), requestDTO.getPostId());
         //알림 추가 필요
+        NotificationRequestDTO RequestDTO = new NotificationRequestDTO(
+                null,
+                userId,
+                postId,
+                participationMapper.getPostOwnerId(postId),
+                userId,
+                NotificationType.거절
+        );
+
+        notificationService.createNotification(RequestDTO);
+
         participationMapper.deleteFromParticipationQueue(requestDTO.getUserId(), requestDTO.getPostId());
     }
 

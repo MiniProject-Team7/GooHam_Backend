@@ -57,10 +57,11 @@ public class ParticipationController {
 
     // 게시물의 전체 참여 신청 조회
     @GetMapping("/{postId}")
-    public ResponseEntity<PageResponseDTO<ParticipationResponseDTO>> findAllParticipants(
+    public ResponseEntity<CustomResponseDTO<PageResponseDTO<ParticipationResponseDTO>>> findAllParticipants(
             @PathVariable Long postId, Pageable pageable) {
         PageResponseDTO<ParticipationResponseDTO> response = participationService.findAllParticipantsByPostID(postId, pageable);
-        return ResponseEntity.ok(response);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(new CustomResponseDTO<PageResponseDTO<ParticipationResponseDTO>>("success", "조회되었습니다.", response));
     }
 
     //  특정 사용자의 참여 신청 상태 조회

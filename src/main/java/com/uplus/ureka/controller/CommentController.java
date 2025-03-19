@@ -43,10 +43,11 @@ public class CommentController {
     }
 
     @GetMapping("/{postId}")
-    public ResponseEntity<PageResponseDTO<CommentsResponseDTO>> getComments(
+    public ResponseEntity<CustomResponseDTO<PageResponseDTO<CommentsResponseDTO>>> getComments(
             @PathVariable Long postId, @RequestParam(value = "sort", required = false, defaultValue = "ASC") String sort, Pageable pageable) {
         PageResponseDTO<CommentsResponseDTO> response = commentsService.getCommentsByPostId(postId, sort, pageable);
-        return ResponseEntity.ok(response);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(new CustomResponseDTO<PageResponseDTO<CommentsResponseDTO>>("success", "참여자 목록 조회 성공", response));
     }
 
 

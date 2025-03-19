@@ -27,6 +27,7 @@ public class NotificationService {
         return notificationMapper.checkCommentExists(postId);
     }
 
+
     public NotificationResponseDTO createNotification(NotificationRequestDTO notificationRequestDTO) {
         Long postId = notificationRequestDTO.getPostId();
         if (!checkPostExists(postId)) {
@@ -60,92 +61,18 @@ public class NotificationService {
             default:
                 throw new CustomExceptions("잘못된 알림 타입입니다.");
         }
-        // ✅ 저장된 `notification`을 기반으로 `NotificationResponseDTO` 생성하여 반환
+        //  저장된 `notification`을 기반으로 `NotificationResponseDTO` 생성하여 반환
         return new NotificationResponseDTO(
-                notification.getId(),              // ✅ DB에서 자동 생성된 ID
+                notification.getId(),
                 notification.getUserId(),
                 notification.getPostId(),
                 notification.getPostUserId(),
                 notification.getParticipantId(),
                 notification.getType(),
-                false,                             // ✅ 기본값: 읽지 않음
-                notification.getCreatedAt()        // ✅ 생성 시간 추가
+                false,
+                notification.getCreatedAt()
         );
-
     }
-    /*
-    // ✅ 알림 생성 (신청)
-    public void createNotificationForRequest(NotificationRequestDTO notificationRequestDTO) {
-        Long postId = notificationRequestDTO.getPostId();
-        if (!checkPostExists(postId)) {
-            throw new CustomExceptions("해당 게시글이 존재하지 않습니다.");
-        }
-
-        Notification notification = new Notification();
-        notification.setUserId(notificationRequestDTO.getUserId());
-        notification.setPostId(notificationRequestDTO.getPostId());
-        notification.setPostUserId(notificationRequestDTO.getPostUserId());
-        notification.setParticipantId(notificationRequestDTO.getParticipantId());
-        notification.setType(notificationRequestDTO.getType());
-
-        notificationMapper.createNotificationForRequest(notification);
-//        NotificationResponseDTO responseDTO = notificationMapper.
-    }
-
-    // ✅ 알림 생성 (승인)
-    public void createNotificationForApproval(NotificationRequestDTO notificationRequestDTO) {
-        Long postId = notificationRequestDTO.getPostId();
-        if (!checkPostExists(postId)) {
-            throw new CustomExceptions("해당 게시글이 존재하지 않습니다.");
-        }
-
-        Notification notification = new Notification();
-        notification.setUserId(notificationRequestDTO.getUserId());
-        notification.setPostId(notificationRequestDTO.getPostId());
-        notification.setPostUserId(notificationRequestDTO.getPostUserId());
-        notification.setParticipantId(notificationRequestDTO.getParticipantId());
-        notification.setType(notificationRequestDTO.getType());
-
-        notificationMapper.createNotificationForApproval(notification);
-    }
-
-    // ✅ 알림 생성 (거절)
-    public void createNotificationForRejection(NotificationRequestDTO notificationRequestDTO) {
-        Long postId = notificationRequestDTO.getPostId();
-        if (!checkPostExists(postId)) {
-            throw new CustomExceptions("해당 게시글이 존재하지 않습니다.");
-        }
-
-        Notification notification = new Notification();
-        notification.setUserId(notificationRequestDTO.getUserId());
-        notification.setPostId(notificationRequestDTO.getPostId());
-        notification.setPostUserId(notificationRequestDTO.getPostUserId());
-        notification.setParticipantId(notificationRequestDTO.getParticipantId());
-        notification.setType(notificationRequestDTO.getType());
-
-        notificationMapper.createNotificationForRejection(notification);
-    }
-
-    // ✅ 알림 생성 (댓글)
-    public void createNotificationForComment(NotificationRequestDTO notificationRequestDTO) {
-        Long postId = notificationRequestDTO.getPostId();
-        if (!checkPostExists(postId)) {
-            throw new CustomExceptions("해당 게시글이 존재하지 않습니다.");
-        }
-        if (!checkCommentExists(postId)) {
-            throw new CustomExceptions("해당 댓글이 존재하지 않습니다.");
-        }
-
-        Notification notification = new Notification();
-        notification.setUserId(notificationRequestDTO.getUserId());
-        notification.setPostId(notificationRequestDTO.getPostId());
-        notification.setPostUserId(notificationRequestDTO.getPostUserId());
-        notification.setParticipantId(notificationRequestDTO.getParticipantId());
-        notification.setType(notificationRequestDTO.getType());
-
-        notificationMapper.createNotificationForComment(notification);
-    }
-*/
 
     // ✅ 사용자 ID로 알림 목록 조회
     public List<Notification> getNotificationsByUserId(Long userId) {

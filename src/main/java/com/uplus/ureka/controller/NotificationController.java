@@ -18,36 +18,39 @@ import java.util.List;
 public class NotificationController {
     private final NotificationService notificationService;
 
-    //  알림 생성
     @PostMapping
-    public ResponseEntity<String> createNotification(@RequestBody NotificationRequestDTO notificationRequestDTO) {
+    public ResponseEntity<CustomResponseDTO<NotificationResponseDTO>> createNotification(@RequestBody NotificationRequestDTO notificationRequestDTO) {
         NotificationResponseDTO responseDTO = notificationService.createNotification(notificationRequestDTO);
-        return ResponseEntity.ok("알림이 생성되었습니다.");
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(new CustomResponseDTO<>("success", responseDTO.getType() + " 알림이 생성되었습니다.", responseDTO));
     }
 
     // 알림 조회
     @GetMapping("/{userId}")
-    public ResponseEntity<List<Notification>> getNotification(@PathVariable Long userId) {
+    public ResponseEntity<CustomResponseDTO<List<Notification>>> getNotification(@PathVariable Long userId) {
         List<Notification> notifications = notificationService.getNotificationsByUserId(userId);
-        if (notifications != null) {
-            return new ResponseEntity<>(notifications, HttpStatus.OK);
+
+        if (notifications != null && !notifications.isEmpty()) {
+            return ResponseEntity.ok(new CustomResponseDTO<>("success", "알림 목록을 불러왔습니다.", notifications));
         } else {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT)
+                    .body(new CustomResponseDTO<>("fail", "알림이 없습니다.", "NO_CONTENT", "/gooham/notifications/" + userId));
         }
     }
 
+
     // 읽은 알림 삭제
     @DeleteMapping("/{userId}")
-    public ResponseEntity<String> deleteNotification(@PathVariable Long userId) {
+    public ResponseEntity<CustomResponseDTO<String>> deleteNotification(@PathVariable Long userId) {
         notificationService.deleteNotifications(userId);
-        return ResponseEntity.ok("읽은 알림이 삭제되었습니다.");
+        return ResponseEntity.ok(new CustomResponseDTO<>("success", "읽은 알림이 삭제되었습니다.", "읽은 알림 삭제 완료"));
     }
 
 
     // 알림 읽음 처리
     @PatchMapping("/{id}")
-    public ResponseEntity<String> markAsRead(@PathVariable Long id, @RequestParam Long userId) {
+    public ResponseEntity<CustomResponseDTO<String>> markAsRead(@PathVariable Long id, @RequestParam Long userId) {
         notificationService.markNotificationAsRead(id, userId);
-        return ResponseEntity.ok("알림을 읽음처리했습니다.");
+        return ResponseEntity.ok(new CustomResponseDTO<>("success", "알림을 읽음처리했습니다.", "알림 읽음 처리 완료"));
     }
 }

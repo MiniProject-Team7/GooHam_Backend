@@ -1,11 +1,14 @@
 package com.uplus.ureka.dto.notification;
 
-import lombok.Data;
+import lombok.*;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class NotificationResponseDTO implements Serializable {
     private Long id;
     private Long userId;

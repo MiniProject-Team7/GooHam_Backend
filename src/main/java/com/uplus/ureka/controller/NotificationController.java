@@ -1,8 +1,11 @@
 package com.uplus.ureka.controller;
 
 import com.uplus.ureka.domain.notification.Notification;
+import com.uplus.ureka.dto.CustomResponseDTO;
 import com.uplus.ureka.dto.notification.NotificationRequestDTO;
+import com.uplus.ureka.dto.notification.NotificationResponseDTO;
 import com.uplus.ureka.service.notification.NotificationService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,18 +14,26 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/gooham/notifications")
+@RequiredArgsConstructor
 public class NotificationController {
     private final NotificationService notificationService;
 
-    public NotificationController(NotificationService notificationService) {
-        this.notificationService = notificationService;
+    //  알림 생성
+    @PostMapping
+    public ResponseEntity<String> createNotification(@RequestBody NotificationRequestDTO notificationRequestDTO) {
+        NotificationResponseDTO responseDTO = notificationService.createNotification(notificationRequestDTO);
+        return ResponseEntity.ok("알림이 생성되었습니다.");
     }
-
+    /*
     // 신청 알림 생성
     @PostMapping("/request")
     public ResponseEntity<String> createRequestNotification(@RequestBody NotificationRequestDTO notificationRequestDTO) {
+//        public ResponseEntity<CustomResponseDTO<NotificationResponseDTO>> createRequestNotification(@RequestBody NotificationRequestDTO notificationRequestDTO) {
         notificationService.createNotificationForRequest(notificationRequestDTO);
         return ResponseEntity.ok("신청 알림이 생성되었습니다.");
+//        return ResponseEntity.status(HttpStatus.CREATED)
+//                .body(new CustomResponseDTO<>("success", "참여 신청이 완료되었습니다.", responseDTO));
+//
     }
 
     // 승인 알림 생성
@@ -45,6 +56,8 @@ public class NotificationController {
         notificationService.createNotificationForComment(notificationRequestDTO);
         return ResponseEntity.ok("댓글 알림이 생성되었습니다.");
     }
+    */
+
 
     // 알림 조회
     @GetMapping("/{userId}")

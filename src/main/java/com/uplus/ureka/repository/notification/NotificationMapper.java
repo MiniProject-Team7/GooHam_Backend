@@ -30,7 +30,7 @@ public interface NotificationMapper {
 
     // 승인 알림 발송
     @Insert("INSERT INTO NOTIFICATIONS (user_id, post_id, post_user_id, participant_id, type, created_at) " +
-            "VALUES (#{userId}, #{postId}, #{postUserId}, #{participantId}, #{type}, NOW())")
+            "VALUES (#{userId}, #{postId}, #{postUserId}, #{participantId}, '승인', NOW())")
     @Options(useGeneratedKeys = true, keyProperty = "id")
     void createNotificationForApproval(Notification notification);
 

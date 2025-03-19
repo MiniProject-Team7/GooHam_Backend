@@ -35,7 +35,7 @@ public interface ParticipationMapper {
     @Insert("INSERT INTO POST_PARTICIPANTS (USER_ID, POST_ID, STATUS, JOINED_AT) " +
             "VALUES (#{userId}, #{postId}, '대기', NOW())")
     @Options(useGeneratedKeys = true, keyProperty = "participantId", keyColumn = "id")
-    void applyParticipation(@Param("userId") Long userId, @Param("postId") Long postId);
+    void applyParticipation(ParticipationRequestDTO requestDTO);
 
 
     // 신청 취소 (DELETE)

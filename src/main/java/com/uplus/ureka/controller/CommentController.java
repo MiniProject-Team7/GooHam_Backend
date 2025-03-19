@@ -1,4 +1,53 @@
 package com.uplus.ureka.controller;
 
+import com.uplus.ureka.dto.CustomResponseDTO;
+import com.uplus.ureka.dto.PageResponseDTO;
+import com.uplus.ureka.dto.post.CommentsRequestDTO;
+import com.uplus.ureka.dto.post.CommentsResponseDTO;
+import com.uplus.ureka.service.post.CommentsService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.*;
+
+@RestController
+@RequestMapping("/gooham/comments")
+@RequiredArgsConstructor
 public class CommentController {
+    private final CommentsService commentsService;
+
+    @PostMapping
+    public ResponseEntity<CustomResponseDTO<CommentsResponseDTO>>
+    createComment(@RequestBody CommentsRequestDTO requestDTO){
+        CommentsResponseDTO responseDTO = commentsService.createComment(requestDTO);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(new CustomResponseDTO<>("success", "댓글 작성이 완료되었습니다.", responseDTO));
+    }
+
+    @DeleteMapping("/{postId}/{commentId}/{userId}")
+    public ResponseEntity<String> deleteComment(@PathVariable Long postId, @PathVariable Long commentId, @PathVariable Long userId)
+    {
+        commentsService.deleteComment(postId, userId, commentId);
+        return ResponseEntity.ok("댓글이 삭제되었습니다.");
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<CustomResponseDTO<CommentsResponseDTO>>
+    updateComment(@RequestBody CommentsRequestDTO requestDTO, @PathVariable Long id){
+        CommentsResponseDTO responseDTO = commentsService.updateComment(requestDTO, id);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(new CustomResponseDTO<>("success", "댓글이 수정되었습니다.", responseDTO));
+    }
+
+    @GetMapping("/{postId}")
+    public ResponseEntity<PageResponseDTO<CommentsResponseDTO>> getComments(
+            @PathVariable Long postId, @RequestParam(value = "sort", required = false, defaultValue = "ASC") String sort, Pageable pageable) {
+        PageResponseDTO<CommentsResponseDTO> response = commentsService.getCommentsByPostId(postId, sort, pageable);
+        return ResponseEntity.ok(response);
+    }
+
+
 }

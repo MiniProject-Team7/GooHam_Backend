@@ -33,24 +33,22 @@ public interface CommentsMapper {
     void deleteComment(@Param("commentId") Long commentId, @Param("postId") Long postId, @Param("userId") Long userId);
 
     // 댓글 목록 조회 (페이징)
-    @Select("SELECT U.NICKNAME AS USERNAME, C.CONTENT, C.CREATED_AT AS CREATEDAT, C.UPDATED_AT AS UPDATEDAT\n" +
-            "FROM COMMENTS C\n" +
-            "LEFT JOIN USERS U ON C.USER_ID = U.ID\n" +
-            "WHERE C.POST_ID = #{postId}\n" +
-            "ORDER BY \n" +
-            "CASE WHEN #{sort} = 'ASC' THEN C.CREATED_AT END ASC, \n" +
-            "CASE WHEN #{sort} = 'DESC' THEN C.CREATED_AT END DESC")
+    @Select("SELECT C.ID, C.POST_ID, C.USER_ID, U.MEMBER_NICKNAME AS USERNAME, C.CONTENT, C.CREATED_AT AS CREATEDAT, C.UPDATED_AT AS UPDATEDAT, C.IS_MODIFIED AS ISMODIFIED " +
+            "FROM COMMENTS C " +
+            "LEFT JOIN USERS U ON C.USER_ID = U.ID " +
+            "WHERE C.POST_ID = #{postId} " +
+            "ORDER BY C.CREATED_AT ${sort}")
     List<CommentsResponseDTO> findCommentsByPostId(
-            @Param("postId") Long postId, RowBounds rowBounds);
+            @Param("postId") Long postId, @Param("sort") String sort, RowBounds rowBounds);
+
 
     //페이징 위해서 개수 세기
-    @Select("SELECT COUNT(*) COMMENTS WHERE POST_ID = #{postId}")
+    @Select("SELECT COUNT(*) FROM COMMENTS WHERE POST_ID = #{postId}")
     long countCommentsByPostId(@Param("postId") Long postId);
 
-    @Select("SELECT U.NICKNAME AS USERNAME, C.CONTENT, C.CREATED_AT AS CREATEDAT, C.UPDATED_AT AS UPDATEDAT\n" +
+    @Select("SELECT C.ID, C.POST_ID, C.USER_ID, U.MEMBER_NICKNAME AS USERNAME, C.CONTENT, C.CREATED_AT AS CREATEDAT, C.UPDATED_AT AS UPDATEDAT, C.IS_MODIFIED AS ISMODIFIED\n" +
             "FROM COMMENTS C\n" +
             "LEFT JOIN USERS U ON C.USER_ID = U.ID\n" +
             "WHERE C.ID = #{commentId}\n")
     CommentsResponseDTO findCommentwithCommentId(@Param("commentId") Long commentId);
-
 }

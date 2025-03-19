@@ -34,33 +34,43 @@ public class CommentsService {
     }
 
     //댓글 수정
-    public CommentsResponseDTO updateComment(CommentsRequestDTO requestDTO){
+    public CommentsResponseDTO updateComment(CommentsRequestDTO requestDTO, Long id) {
         Long postId = requestDTO.getPostId();
         Long userId = requestDTO.getUserId();
-        Long commentId = requestDTO.getCommentId();
+        Long commentId = id;  // 여기서 null인지 확인
         String content = requestDTO.getContent();
+
+        // 🚨 디버깅 로그 추가
+        System.out.println("🔍 postId: " + postId);
+        System.out.println("🔍 userId: " + userId);
+        System.out.println("🔍 commentId: " + commentId); // null인지 확인
+        System.out.println("🔍 content: " + content);
+
+        if (commentId == null) {
+            throw new IllegalArgumentException("Error: commentId cannot be null.");
+        }
 
         commentsMapper.updateComment(commentId, postId, userId, content);
         CommentsResponseDTO responseDTO = commentsMapper.findCommentwithCommentId(commentId);
+
         return responseDTO;
     }
 
     // 댓글 삭제
-    public void deleteComment(CommentsRequestDTO requestDTO){
-        Long postId = requestDTO.getPostId();
-        Long userId = requestDTO.getUserId();
-        Long commentId = requestDTO.getCommentId();
+    public void deleteComment(Long postId, Long userId, Long commentId){
 
         commentsMapper.deleteComment(commentId, postId, userId);
     }
 
     //댓글 목록 조회
-    public PageResponseDTO<CommentsResponseDTO> getCommentsByPostId(Long postId, Pageable pageable) {
+    public PageResponseDTO<CommentsResponseDTO> getCommentsByPostId(Long postId, String sort, Pageable pageable) {
         int offset = pageable.getPageNumber()* pageable.getPageSize();
         int limit = pageable.getPageSize();
-
+        if (sort == null || (!sort.equalsIgnoreCase("ASC") && !sort.equalsIgnoreCase("DESC"))) {
+            sort = "ASC";
+        }
         List<CommentsResponseDTO> comments =
-                commentsMapper.findCommentsByPostId(postId, new RowBounds(offset, limit));
+                commentsMapper.findCommentsByPostId(postId, sort, new RowBounds(offset, limit));
 
         // 2. 총 댓글 개수 조회
         long totalElements = commentsMapper.countCommentsByPostId(postId);

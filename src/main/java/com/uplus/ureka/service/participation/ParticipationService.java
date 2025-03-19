@@ -42,7 +42,7 @@ public class ParticipationService {
         }
 
         // DTO를 전달하여 applyParticipation 호출
-        participationMapper.applyParticipation(requestDTO);
+        participationMapper.applyParticipation(userId, postId);
 
         // 생성된 participantId를 확인
         ParticipationResponseDTO responseDTO = participationMapper.findUserParticipationStatus(userId, postId);

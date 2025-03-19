@@ -1,12 +1,15 @@
 package com.uplus.ureka.domain.notification;
 
 import com.uplus.ureka.dto.notification.NotificationType;
-import lombok.Data;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Notification {
     private Long id;
 

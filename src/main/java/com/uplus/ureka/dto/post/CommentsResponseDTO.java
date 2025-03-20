@@ -17,7 +17,7 @@ public class CommentsResponseDTO {
     private LocalDateTime updatedAt;
     private Boolean isModified;
 
-    public CommentsResponseDTO(Long id, Long postId, Long userId, String nickname, String content,
+    public CommentsResponseDTO(Long id, Long postId, Long userId, String userName, String content,
                                LocalDateTime createdAt, LocalDateTime updatedAt, Boolean isModified)
     {
         this.id = id;

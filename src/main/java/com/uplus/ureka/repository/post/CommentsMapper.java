@@ -26,8 +26,7 @@ public interface CommentsMapper {
 
     // 댓글 수정하기
     @Update("UPDATE COMMENTS SET CONTENT = #{content}, UPDATED_AT = NOW(), IS_MODIFIED = 1 WHERE ID = #{commentId} AND POST_ID = #{postId} AND USER_ID = #{userId}")
-    void updateComment(@Param("commentId") Long commentId, @Param("postId") Long postId, @Param("userId") Long userId, @Param("content") String content);
-
+    void updateComment(CommentsRequestDTO requestDTO);
     //댓글 삭제하기
     @Delete("DELETE FROM COMMENTS WHERE ID = #{commentId} AND USER_ID = #{userId} AND POST_ID = #{postId}")
     void deleteComment(@Param("commentId") Long commentId, @Param("postId") Long postId, @Param("userId") Long userId);

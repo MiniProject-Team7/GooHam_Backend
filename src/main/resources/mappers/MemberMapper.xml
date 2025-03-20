@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.uplus.ureka.repository.user.member.MemberMapper">
+
+
+    <insert id="insert" parameterType="com.uplus.ureka.dto.user.member.MemberDTO">
+        INSERT INTO USERS (member_password, member_email, member_name, member_nickname, member_phone, member_introduce)
+        VALUES(#{member_password},#{member_email},#{member_name},#{member_nickname}, #{member_phone},#{member_introduce})
+    </insert>
+
+
+    <select id="isIdDuplicated" parameterType="java.lang.String" resultType="java.lang.Boolean">
+        SELECT COUNT(*) > 0
+        FROM USERS
+        WHERE member_nickname = #{member_nickname}
+    </select>
+
+
+    <select id="isEmailDuplicated" parameterType="java.lang.String" resultType="java.lang.Boolean">
+        SELECT COUNT(*) > 0
+        FROM USERS
+        WHERE member_email = #{member_email}
+    </select>
+
+</mapper>

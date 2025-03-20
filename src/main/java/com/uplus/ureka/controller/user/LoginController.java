@@ -1,4 +1,4 @@
-package com.uplus.ureka.controller.user.login;
+package com.uplus.ureka.controller.user;
 
 import com.uplus.ureka.dto.user.member.MemberDTO;
 import com.uplus.ureka.exception.CustomExceptions;
@@ -12,9 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -54,7 +51,7 @@ public class LoginController {
             // 원하는 응답 형식으로 구성
             Map<String, Object> userData = new HashMap<>();
             userData.put("member_email", authenticatedMember.getMember_email());
-            userData.put("member_nickname", authenticatedMember.getMember_nickname()); // 닉네임 필드가 있다고 가정
+            //userData.put("member_nickname", authenticatedMember.getMember_nickname()); // 닉네임 필드가 있다고 가정
             userData.put("member_name", authenticatedMember.getMember_name());
 
             Map<String, Object> data = new HashMap<>();

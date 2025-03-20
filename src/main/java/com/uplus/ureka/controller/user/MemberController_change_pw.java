@@ -1,4 +1,4 @@
-package com.uplus.ureka.controller.user.change;
+package com.uplus.ureka.controller.user;
 
 import com.uplus.ureka.service.user.change.MemberService_change_pw;
 import org.springframework.beans.factory.annotation.Autowired;

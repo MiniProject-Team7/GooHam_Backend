@@ -4,8 +4,6 @@ import com.uplus.ureka.dto.user.login.LoginDTO;
 import com.uplus.ureka.dto.user.member.MemberDTO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Repository;
 
 @Repository

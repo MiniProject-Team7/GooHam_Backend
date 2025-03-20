@@ -1,4 +1,4 @@
-package com.uplus.ureka.controller.user.mypage;
+package com.uplus.ureka.controller.user;
 
 import com.uplus.ureka.dto.user.Mypage.CommonResponseDTO;
 import com.uplus.ureka.dto.user.Mypage.MyPageDTO;
@@ -6,7 +6,6 @@ import com.uplus.ureka.service.user.mypage.MyPageServicelmpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 

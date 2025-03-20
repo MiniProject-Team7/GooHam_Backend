@@ -1,4 +1,4 @@
-package com.uplus.ureka.controller.user.id;
+package com.uplus.ureka.controller.user;
 
 import com.uplus.ureka.service.user.id.MemberService_id;
 import org.springframework.stereotype.Controller;

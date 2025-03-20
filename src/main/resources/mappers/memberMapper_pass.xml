@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.uplus.ureka.repository.user.password.MemberMapper_Pass">
+
+
+    <update id="updateVerificationCode">
+        UPDATE USERS SET verificationcode = #{code} WHERE member_email = #{email} AND delflag != 1
+    </update>
+
+    <select id="getPasswordByEmailAndVerification" resultType="string">
+        SELECT member_password FROM USERS WHERE member_email = #{email} AND verificationcode = #{code}
+    </select>
+
+    <select id="getDelflagByEmail" resultType="integer">
+        SELECT delflag FROM USERS WHERE member_email = #{email}
+    </select>
+
+    <select id="findUserByEmail" resultType="string">
+        SELECT member_email FROM USERS WHERE member_email = #{email}
+    </select>
+
+</mapper>

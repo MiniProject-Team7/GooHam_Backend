@@ -57,4 +57,19 @@ public interface NotificationMapper {
             "</script>")
     List<Notification> getNotifications(@Param("userId") Long userId
     );
+
+    // 기한이 지난 스케줄 조회
+    @Select("SELECT ID FROM NOTIFICATIONS WHERE POST_ID IN (SELECT ID FROM POSTS WHERE SCHEDULE_END < NOW() -  INTERVAL 7 DAY)")
+    List<Long> findPastNotifications();
+
+    // 기한이 지난 참여 내역 삭제
+    @Delete("<script>" +
+            "DELETE FROM NOTIFICATIONS " +
+            "WHERE ID IN " +
+            "<foreach item='id' collection='pastNotificationIds' open='(' separator=',' close=')'>" +
+            "#{id}" +
+            "</foreach>" +
+            "</script>")
+    void deleteOldNotifications(@Param("pastNotificationIds") List<Long> pastNotificationIds);
+
 }

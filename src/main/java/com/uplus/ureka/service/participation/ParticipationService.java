@@ -10,9 +10,12 @@ import com.uplus.ureka.dto.participation.ParticipationResponseDTO;
 import com.uplus.ureka.repository.participation.ParticipationMapper;
 import lombok.RequiredArgsConstructor;
 import org.apache.ibatis.session.RowBounds;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
@@ -23,6 +26,8 @@ import java.util.List;
 public class ParticipationService {
     private final ParticipationMapper participationMapper;
     private final NotificationService notificationService;
+
+    private static final Logger logger = LoggerFactory.getLogger(ParticipationService.class);
 
     // 참여 신청
     public ParticipationResponseDTO applyParticipation(ParticipationRequestDTO requestDTO) {
@@ -180,5 +185,22 @@ public class ParticipationService {
             throw new CustomExceptions("해당 게시글이 존재하지 않습니다.");
         }
         return participationMapper.findUserParticipationStatus(requestDTO.getUserId(), requestDTO.getPostId());
+    }
+
+
+    @Scheduled(cron = "0 21 11 * * ?") // TEST
+//    @Scheduled(cron = "0 0 0 * * ?") // 매일 자정에 실행
+    public void deleteEndedSchedules() {
+        List<Long> pastSchedules = participationMapper.findPastSchedules();
+
+        // 기한이 지난 스케줄이 없을 경우 예외 처리
+        if (pastSchedules == null || pastSchedules.isEmpty()) {
+//            logger.warn("기한이 지난 참여 신청 내역이 없습니다.");
+            throw new CustomExceptions("기한이 지난 참여 신청 내역이 없습니다.");
+        }
+
+        // 기한이 지난 신청 내역 삭제
+        participationMapper.deleteParticipantsList();
+        logger.info("기한이 지난 참여 신청 내역이 삭제되었습니다.");
     }
 }

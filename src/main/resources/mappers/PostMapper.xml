@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.uplus.ureka.repository.post.PostMapper">
+
+    <!-- 모집 글 조회 -->
+    <select id="findPostsWithFilters" resultType="com.uplus.ureka.dto.post.PostResponseDTO">
+        SELECT
+        p.id,
+        u.member_nickname AS userName,
+        p.title,
+        p.content,
+        p.max_participants AS maxParticipants,
+        p.current_participants AS currentParticipants,
+        c.name AS categoryName,
+        p.status,
+        p.schedule_start AS scheduleStart,
+        p.schedule_end AS scheduleEnd,
+        p.location,
+        p.created_at AS createdAt,
+        p.updated_at AS updatedAt
+        FROM POSTS p
+        LEFT JOIN USERS u ON p.user_id = u.id
+        LEFT JOIN CATEGORIES c ON c.id = p.category_id
+        WHERE 1=1
+
+        <if test="categoryId != null">
+            AND p.category_id = #{categoryId}
+        </if>
+
+        <if test="status != null">
+            AND p.status = #{status}
+        </if>
+
+        <if test="location != null">
+            AND p.location LIKE CONCAT('%', #{location}, '%')
+        </if>
+
+        <if test="scheduleStartAfter != null">
+            AND p.schedule_start <![CDATA[>=]]> #{scheduleStartAfter}
+        </if>
+
+        <if test="scheduleEndBefore != null">
+            AND p.schedule_end <![CDATA[<=]]> #{scheduleEndBefore}
+        </if>
+
+        <!-- 정렬 기준과 방향 설정 -->
+        ORDER BY
+        <choose>
+            <when test="sortField != null and sortField != ''">
+                ${sortField}
+            </when>
+            <otherwise>
+                p.id
+            </otherwise>
+        </choose>
+        <choose>
+            <when test="sortOrder != null and sortOrder != ''">
+                ${sortOrder}
+            </when>
+            <otherwise>
+                ASC
+            </otherwise>
+        </choose>
+    </select>
+
+    <!-- 게시글 개수 조회 -->
+    <select id="countPostsWithFilters" resultType="long">
+        SELECT COUNT(*)
+        FROM POSTS p
+        WHERE 1=1
+
+        <if test="categoryId != null">
+            AND p.category_id = #{categoryId}
+        </if>
+
+        <if test="status != null">
+            AND p.status = #{status}
+        </if>
+
+        <if test="location != null">
+            AND p.location LIKE CONCAT('%', #{location}, '%')
+        </if>
+
+        <if test="scheduleStartAfter != null">
+            AND p.schedule_start <![CDATA[>=]]> #{scheduleStartAfter}
+        </if>
+
+        <if test="scheduleEndBefore != null">
+            AND p.schedule_end <![CDATA[<=]]> #{scheduleEndBefore}
+        </if>
+    </select>
+
+</mapper>

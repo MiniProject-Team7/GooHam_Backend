@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
+import com.uplus.ureka.exception.*;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -37,9 +38,7 @@ public class JwtInterceptor implements HandlerInterceptor {
         // 비회원일 때(액세스 토큰이 없을 때)
         if (accessToken == null) {
             logger.debug("비회원 유저입니다 URI : {}", requestURI);
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);  // 401 Unauthorized
-            response.getWriter().write("Unauthorized - Missing JWT token");
-            return false;
+            throw new AuthException("UnAuthorized - Missing JWT Token");
         } else {
             logger.debug("access 존재합니다.");
             System.out.println("access 존재합니다.");
@@ -51,9 +50,7 @@ public class JwtInterceptor implements HandlerInterceptor {
             } else {
                 //액세스 토큰이 유효하지 않을 시
                 logger.error("Invalid token: " + accessToken);
-                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                response.getWriter().write("Unauthorized - Invalid JWT token");
-                return false;
+                throw new AuthException("Unauthorized - Invalid JWT token");
             }
         }
     }

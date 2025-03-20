@@ -4,7 +4,7 @@ import com.uplus.ureka.dto.PageResponseDTO;
 import com.uplus.ureka.dto.notification.NotificationType;
 import com.uplus.ureka.dto.notification.NotificationRequestDTO;
 import com.uplus.ureka.service.notification.NotificationService;
-import com.uplus.ureka.exception.CustomExceptions;
+import com.uplus.ureka.exception.*;
 import com.uplus.ureka.dto.participation.ParticipationRequestDTO;
 import com.uplus.ureka.dto.participation.ParticipationResponseDTO;
 import com.uplus.ureka.repository.participation.ParticipationMapper;
@@ -35,11 +35,11 @@ public class ParticipationService {
         Long postId = requestDTO.getPostId();
         // 사용자 확인
         if(!participationMapper.checkUserExists(userId)){
-            throw new CustomExceptions("존재하지 않는 회원입니다.");
+            throw new ResourceExceptions("존재하지 않는 회원입니다.");
         }
         // 게시물 확인
         if (!participationMapper.checkExistPost(postId)) {
-            throw new CustomExceptions("해당 게시글이 존재하지 않습니다.");
+            throw new ResourceExceptions("해당 게시글이 존재하지 않습니다.");
         }
         // 중복 신청 확인
         if (participationMapper.checkExistParticipation(userId, postId)) {
@@ -75,15 +75,15 @@ public class ParticipationService {
         Long postId = requestDTO.getPostId();
         // 신청 기록 확인
         if (!participationMapper.checkExistParticipation(userId, postId)) {
-            throw new CustomExceptions("신청 기록이 없습니다.");
+            throw new ResourceExceptions("신청 기록이 없습니다.");
         }
         // 사용자 확인
         if(!participationMapper.checkUserExists(userId)){
-            throw new CustomExceptions("존재하지 않는 회원입니다.");
+            throw new ForbiddenException("존재하지 않는 회원입니다.");
         }
         // 게시물 확인
         if (!participationMapper.checkExistPost(postId)) {
-            throw new CustomExceptions("해당 게시글이 존재하지 않습니다.");
+            throw new ResourceExceptions("해당 게시글이 존재하지 않습니다.");
         }
         participationMapper.cancelParticipation(requestDTO.getUserId(), requestDTO.getPostId());
     }
@@ -94,16 +94,16 @@ public class ParticipationService {
 
         // 사용자 확인
         if(!participationMapper.checkUserExists(userId)){
-            throw new CustomExceptions("존재하지 않는 회원입니다.");
+            throw new ResourceExceptions("존재하지 않는 회원입니다.");
         }
         // 게시물 확인
         if (!participationMapper.checkExistPost(postId)) {
-            throw new CustomExceptions("해당 게시글이 존재하지 않습니다.");
+            throw new ResourceExceptions("해당 게시글이 존재하지 않습니다.");
         }
 
         // 신청 기록 확인
         if (!participationMapper.checkExistParticipation(userId, postId)) {
-            throw new CustomExceptions("신청한 기록이 없습니다.");
+            throw new ResourceExceptions("신청한 기록이 없습니다.");
         }
         // 최대 정원 확인
         if (!participationMapper.checkPersonAvailable(postId)) {
@@ -133,15 +133,15 @@ public class ParticipationService {
         Long postId = requestDTO.getPostId();
         // 사용자 확인
         if(!participationMapper.checkUserExists(userId)){
-            throw new CustomExceptions("존재하지 않는 회원입니다.");
+            throw new ResourceExceptions("존재하지 않는 회원입니다.");
         }
         // 게시물 확인
         if (!participationMapper.checkExistPost(postId)) {
-            throw new CustomExceptions("해당 게시글이 존재하지 않습니다.");
+            throw new ResourceExceptions("해당 게시글이 존재하지 않습니다.");
         }
         // 신청 기록 확인
         if (!participationMapper.checkExistParticipation(userId, postId)) {
-            throw new CustomExceptions("신청한 기록이 없습니다.");
+            throw new ResourceExceptions("신청한 기록이 없습니다.");
         }
         participationMapper.rejectParticipation(requestDTO.getUserId(), requestDTO.getPostId());
         //알림 추가 필요
@@ -178,11 +178,11 @@ public class ParticipationService {
         Long postId = requestDTO.getPostId();
         // 사용자 확인
         if(!participationMapper.checkUserExists(userId)){
-            throw new CustomExceptions("존재하지 않는 회원입니다.");
+            throw new ResourceExceptions("존재하지 않는 회원입니다.");
         }
         // 게시물 확인
         if (!participationMapper.checkExistPost(postId)) {
-            throw new CustomExceptions("해당 게시글이 존재하지 않습니다.");
+            throw new ResourceExceptions("해당 게시글이 존재하지 않습니다.");
         }
         return participationMapper.findUserParticipationStatus(requestDTO.getUserId(), requestDTO.getPostId());
     }
@@ -196,7 +196,7 @@ public class ParticipationService {
         // 기한이 지난 스케줄이 없을 경우 예외 처리
         if (pastSchedules == null || pastSchedules.isEmpty()) {
 //            logger.warn("기한이 지난 참여 신청 내역이 없습니다.");
-            throw new CustomExceptions("기한이 지난 참여 신청 내역이 없습니다.");
+            throw new ResourceExceptions("기한이 지난 참여 신청 내역이 없습니다.");
         }
 
         // 기한이 지난 신청 내역 삭제

@@ -3,7 +3,7 @@ package com.uplus.ureka.service.notification;
 import com.uplus.ureka.domain.notification.Notification;
 import com.uplus.ureka.dto.notification.NotificationRequestDTO;
 import com.uplus.ureka.dto.notification.NotificationResponseDTO;
-import com.uplus.ureka.exception.CustomExceptions;
+import com.uplus.ureka.exception.*;
 import com.uplus.ureka.repository.notification.NotificationMapper;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -37,11 +37,11 @@ public class NotificationService {
     public NotificationResponseDTO createNotification(NotificationRequestDTO notificationRequestDTO) {
         Long postId = notificationRequestDTO.getPostId();
         if (!checkPostExists(postId)) {
-            throw new CustomExceptions("해당 게시글이 존재하지 않습니다.");
+            throw new ResourceExceptions("해당 게시글이 존재하지 않습니다.");
         }
 
         if ("댓글".equals(notificationRequestDTO.getType()) && !checkCommentExists(postId)) {
-            throw new CustomExceptions("해당 댓글이 존재하지 않습니다.");
+            throw new ResourceExceptions("해당 댓글이 존재하지 않습니다.");
         }
 
         Notification notification = new Notification();
@@ -104,7 +104,7 @@ public class NotificationService {
         // 기한이 지난 스케줄이 없을 경우 예외 처리
         if (pastNotifications == null || pastNotifications.isEmpty()) {
             logger.warn("기한이 지난 참여 신청 내역이 없습니다.");
-            throw new CustomExceptions("기한이 지난 참여 신청 내역이 없습니다.");
+            throw new ResourceExceptions("기한이 지난 참여 신청 내역이 없습니다.");
             // return   // 기한이 지난 스케줄이 없으면 작업 종료
         }
 

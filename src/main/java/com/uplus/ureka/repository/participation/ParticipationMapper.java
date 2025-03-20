@@ -15,7 +15,7 @@ public interface ParticipationMapper {
 
     // 신청 글 존재 확인
     @Select("SELECT EXISTS (SELECT 1 FROM POST_PARTICIPANTS WHERE USER_ID = #{userId} " +
-            "AND POST_ID = #{postId} AND STATUS = '대기')")
+            "AND POST_ID = #{postId})")
     boolean checkExistParticipation(@Param("userId") Long userId, @Param("postId") Long postId);
 
     // 신청 대상 게시글 존재 확인

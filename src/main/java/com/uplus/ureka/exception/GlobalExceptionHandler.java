@@ -11,7 +11,7 @@ import jakarta.servlet.http.HttpServletRequest;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    // CustomException
+    // Request Body Error
     @ExceptionHandler(CustomExceptions.class)
     public ResponseEntity<CustomResponseDTO<Object>> handleCustomException(CustomExceptions ex, HttpServletRequest request) {
         return ResponseEntity.badRequest()
@@ -21,6 +21,37 @@ public class GlobalExceptionHandler {
                         "400_BAD_REQUEST",
                         request.getRequestURI()
                 ));
+    }
+
+    // Authorization error
+    @ExceptionHandler(AuthException.class)
+    public ResponseEntity<CustomResponseDTO<Object>> handleAuthException(AuthException ex, HttpServletRequest request) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(new CustomResponseDTO<>(
+                        "error",
+                        ex.getMessage(),
+                        "401_UNAUTHORIZED",
+                        request.getRequestURI()
+                ));
+    }
+
+    // Forbidden Error
+    @ExceptionHandler(ForbiddenException.class)
+    public ResponseEntity<CustomResponseDTO<Object>> handleAuthException(ForbiddenException ex, HttpServletRequest request) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                .body(new CustomResponseDTO<>(
+                        "error",
+                        ex.getMessage(),
+                        "403_FORBIDDEN",
+                        request.getRequestURI()
+                ));
+    }
+
+    //Resource Not Found Error
+    @ExceptionHandler(ResourceExceptions.class)
+    public ResponseEntity<CustomResponseDTO<Object>> handleAuthException(ResourceExceptions ex, HttpServletRequest request) {
+        return ResponseEntity.notFound()
+                .build();
     }
 
 

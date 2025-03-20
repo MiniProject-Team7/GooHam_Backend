@@ -3,7 +3,7 @@ package com.uplus.ureka.service.post;
 import com.uplus.ureka.dto.post.PostRequestDTO;
 import com.uplus.ureka.dto.post.PostResponseDTO;
 import com.uplus.ureka.dto.PageResponseDTO;
-import com.uplus.ureka.exception.CustomExceptions;
+import com.uplus.ureka.exception.*;
 import com.uplus.ureka.repository.post.PostMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -29,7 +29,7 @@ public class PostService {
 
         //사용자 확인
         if (!postMapper.checkUserExists(requestDTO.getUserId())) {
-            throw new CustomExceptions("존재하지 않는 회원입니다.");
+            throw new ForbiddenException("존재하지 않는 회원입니다.");
         }
 
         // 모집 글 삽입 후 자동 생성된 id를 requestDTO에 설정
@@ -44,7 +44,7 @@ public class PostService {
         //작성한 유저가 맞는 지 확인
         //모집 글 존재 확인
         if (!postMapper.checkExistPost(postId)) {
-            throw new CustomExceptions("해당 모집 글이 존재하지 않습니다.");
+            throw new ResourceExceptions("해당 모집 글이 존재하지 않습니다.");
         }
 
         postMapper.removePost(postId);
@@ -54,7 +54,7 @@ public class PostService {
     public PostResponseDTO updatePost(PostRequestDTO requestDTO) {
         //모집 글 존재 확인
         if (!postMapper.checkExistPost(requestDTO.getPostId())) {  // 수정할 때는 id를 사용
-            throw new CustomExceptions("해당 모집 글이 존재하지 않습니다.");
+            throw new ResourceExceptions("해당 모집 글이 존재하지 않습니다.");
         }
         postMapper.updatePost(requestDTO);
 
@@ -87,7 +87,7 @@ public class PostService {
     //모집 글 상세 조회
     public PostResponseDTO findPostById(Long postId) {
         if (!postMapper.checkExistPost(postId)) {
-            throw new CustomExceptions("해당 모집 글이 존재하지 않습니다.");
+            throw new ResourceExceptions("해당 모집 글이 존재하지 않습니다.");
         }
         return postMapper.findPostById(postId);
     }

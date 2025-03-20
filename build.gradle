@@ -57,11 +57,12 @@ dependencies {
 	implementation 'jakarta.servlet:jakarta.servlet-api:6.0.0'
 
 
-	// 이메일
-	//implementation group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: '3.0.5'
+	// Spring Boot Mail (이메일 전송 기능)
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
-	implementation 'javax.mail:javax.mail-api:1.6.2'
-	implementation group: 'com.sun.mail', name: 'javax.mail', version: '1.6.2'
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	implementation 'org.thymeleaf:thymeleaf-spring6'
+	implementation 'com.sun.mail:jakarta.mail:2.0.1'
+	implementation 'jakarta.activation:jakarta.activation-api:2.1.2'
 
 }
 

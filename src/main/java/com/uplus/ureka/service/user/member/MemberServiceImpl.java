@@ -63,8 +63,8 @@ public class MemberServiceImpl implements MemberService{
         memberDTO.setMember_name(member_name);
         memberDTO.setMember_nickname(member_nickname);
         memberDTO.setMember_email(member_email);
-        memberDTO.setMember_email(member_phone);
-        memberDTO.setMember_email(member_introduce);
+        memberDTO.setMember_phone(member_phone);
+        memberDTO.setMember_introduce(member_introduce);
 
         int result = memberMapper.insert(memberDTO);
         return result == 1;

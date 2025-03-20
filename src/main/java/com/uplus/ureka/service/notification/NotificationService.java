@@ -95,7 +95,7 @@ public class NotificationService {
         notificationMapper.updateNotification(notificationId, userId);
     }
 
-    @Scheduled(cron = "0 19 14 * * ?") // TEST
+    @Scheduled(cron = "0 0 0 * * ?") // TEST
     // ✅ 일정 시간이 지난 알림 삭제
     public void deleteOldNotifications() {
         // 기한이 지난 스케줄 조회

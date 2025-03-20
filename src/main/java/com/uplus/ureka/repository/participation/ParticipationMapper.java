@@ -88,4 +88,14 @@ public interface ParticipationMapper {
 
     @Select("SELECT USER_ID AS POST_USER_ID FROM POSTS WHERE ID = #{postId}")
     long getPostOwnerId(@Param("postId") Long postId);
+
+    // endDate가 지난 스케줄 조회 (스케줄러)
+    @Select("SELECT ID " +
+            "FROM POST_PARTICIPANTS " +
+            "WHERE POST_ID IN (SELECT ID FROM POSTS WHERE SCHEDULE_END < NOW())")
+    List<Long> findPastSchedules();
+
+    // endDate가 지난 스케줄의 신청 내역 삭제
+    @Delete("DELETE FROM POST_PARTICIPANTS WHERE POST_ID IN (SELECT ID FROM POSTS WHERE SCHEDULE_END < NOW())")
+    void deleteParticipantsList();
 }

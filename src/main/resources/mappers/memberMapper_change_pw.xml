@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.uplus.ureka.repository.user.change.MemberMapper_change_pw">
+
+    <update id="updateNewPassWordByEmail">
+        UPDATE USERS SET member_password = #{password} WHERE member_email = #{email}
+    </update>
+
+    <select id="findUserByEmail" resultType="string">
+        SELECT member_email FROM USERS WHERE member_email = #{email}
+    </select>
+
+    <select id="getPasswordByEmail" resultType="string">
+        SELECT member_password FROM USERS WHERE member_email = #{email}
+    </select>
+
+</mapper>

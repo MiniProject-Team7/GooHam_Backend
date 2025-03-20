@@ -37,7 +37,7 @@ public class CommentController {
     @PatchMapping("/{id}")
     public ResponseEntity<CustomResponseDTO<CommentsResponseDTO>>
     updateComment(@RequestBody CommentsRequestDTO requestDTO, @PathVariable Long id){
-        CommentsResponseDTO responseDTO = commentsService.updateComment(requestDTO, id);
+        CommentsResponseDTO responseDTO = commentsService.updateComment(requestDTO);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new CustomResponseDTO<>("success", "댓글이 수정되었습니다.", responseDTO));
     }

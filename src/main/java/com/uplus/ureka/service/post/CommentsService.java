@@ -50,14 +50,14 @@ public class CommentsService {
     }
 
     //댓글 수정
-    public CommentsResponseDTO updateComment(CommentsRequestDTO requestDTO, Long id) {
+    public CommentsResponseDTO updateComment(CommentsRequestDTO requestDTO) {
         Long postId = requestDTO.getPostId();
         Long userId = requestDTO.getUserId();
-        Long commentId = id;  // 여기서 null인지 확인
+        Long commentId = requestDTO.getCommentId();
         String content = requestDTO.getContent();
 
 
-        commentsMapper.updateComment(commentId, postId, userId, content);
+        commentsMapper.updateComment(requestDTO);
         CommentsResponseDTO responseDTO = commentsMapper.findCommentwithCommentId(commentId);
 
         return responseDTO;

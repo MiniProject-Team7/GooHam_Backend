@@ -1,17 +1,14 @@
-package com.uplus.ureka.controller.user.mail;
+package com.uplus.ureka.controller.user;
 
 import com.uplus.ureka.dto.user.mail.MailHtmlSendDto;
 import com.uplus.ureka.dto.user.mail.MailTxtSendDto;
 import com.uplus.ureka.service.user.mail.MailSendService;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import java.util.List;
 
 
 @Controller

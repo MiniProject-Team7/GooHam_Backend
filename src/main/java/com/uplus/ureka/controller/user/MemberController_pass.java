@@ -1,7 +1,6 @@
-package com.uplus.ureka.controller.user.password;
+package com.uplus.ureka.controller.user;
 
 import com.uplus.ureka.service.user.mail.Impl.MailSendServiceImpl;
-import com.uplus.ureka.service.user.mail.MailSendService;
 import com.uplus.ureka.service.user.password.MemberService_pass;
 import com.uplus.ureka.dto.user.mail.MailTxtSendDto;
 import org.springframework.beans.factory.annotation.Autowired;

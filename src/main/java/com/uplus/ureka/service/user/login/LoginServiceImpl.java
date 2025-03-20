@@ -46,6 +46,10 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
     public MemberDTO checkLoin(String username, String password) throws CustomExceptions {
         MemberDTO user = loginMapper.findByUsername2(username);
 
+        System.out.println("DB에서 조회된 이메일: " + (user != null ? user.getMember_email() : "NULL"));
+        System.out.println("DB에서 조회된 비밀번호: " + (user != null ? user.getMember_password() : "NULL"));
+
+
         if (user == null) {
             // user가 null인 경우 예외 발생
             throw new CustomExceptions("유저를 찾을 수 없습니다.");

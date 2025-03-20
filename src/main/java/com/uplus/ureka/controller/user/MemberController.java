@@ -1,4 +1,4 @@
-package com.uplus.ureka.controller.user.member;
+package com.uplus.ureka.controller.user;
 
 import com.uplus.ureka.service.user.member.MemberService;
 import lombok.RequiredArgsConstructor;

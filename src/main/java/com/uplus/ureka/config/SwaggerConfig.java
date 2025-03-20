@@ -1,6 +1,10 @@
 package com.uplus.ureka.config;
 
+import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.security.SecurityRequirement;
+import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.springdoc.core.models.GroupedOpenApi;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -31,5 +35,22 @@ public class SwaggerConfig {
                                         )
                 )
                 .build();
+    }
+
+
+    // Bearer Token 인증 추가
+    @Bean
+    public OpenAPI api() {
+        SecurityScheme apiKey = new SecurityScheme()
+                .type(SecurityScheme.Type.HTTP) // Bearer Token 방식
+                .scheme("bearer")
+                .bearerFormat("JWT");
+
+        SecurityRequirement securityRequirement = new SecurityRequirement()
+                .addList("Bearer Token");
+
+        return new OpenAPI()
+                .components(new Components().addSecuritySchemes("Bearer Token", apiKey))
+                .addSecurityItem(securityRequirement);
     }
 }

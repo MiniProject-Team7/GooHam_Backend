@@ -51,10 +51,24 @@ public interface NotificationMapper {
 
     // 알림 조회 쿼리
     @Select("<script>" +
-            "SELECT id, user_id, post_id, post_user_id, participant_id, type, is_read, created_at " +
+            "SELECT id, user_id AS userId, post_id AS postId, post_user_id AS postUserId, participant_id AS participantId, type, is_read AS isRead, created_at AS createdAt " +
             "FROM NOTIFICATIONS WHERE user_id = #{userId} " +
             "ORDER BY created_at DESC" +
             "</script>")
-    List<Notification> getNotifications(@Param("userId") Long userId
-    );
+    List<Notification> getNotifications(@Param("userId") Long userId);
+
+    // 기한이 지난 스케줄 조회
+    @Select("SELECT ID FROM NOTIFICATIONS WHERE POST_ID IN (SELECT ID FROM POSTS WHERE SCHEDULE_END < NOW() -  INTERVAL 7 DAY)")
+    List<Long> findPastNotifications();
+
+    // 기한이 지난 참여 내역 삭제
+    @Delete("<script>" +
+            "DELETE FROM NOTIFICATIONS " +
+            "WHERE ID IN " +
+            "<foreach item='id' collection='pastNotificationIds' open='(' separator=',' close=')'>" +
+            "#{id}" +
+            "</foreach>" +
+            "</script>")
+    void deleteOldNotifications(@Param("pastNotificationIds") List<Long> pastNotificationIds);
+
 }

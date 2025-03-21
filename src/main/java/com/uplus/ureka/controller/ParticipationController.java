@@ -30,13 +30,14 @@ public class ParticipationController {
 
     //  참여 취소 (DELETE는 RequestBody 지원 X → PathVariable 사용)
     @DeleteMapping("/{postId}/{userId}")
-    public ResponseEntity<String> cancelParticipation(@PathVariable Long userId, @PathVariable Long postId) {
+    public ResponseEntity<CustomResponseDTO<String>> cancelParticipation(@PathVariable Long userId, @PathVariable Long postId) {
         ParticipationRequestDTO requestDTO = new ParticipationRequestDTO();
         requestDTO.setUserId(userId);
         requestDTO.setPostId(postId);
 
         participationService.cancelParticipation(requestDTO);
-        return ResponseEntity.ok("참여 신청이 취소되었습니다.");
+        return ResponseEntity.status(HttpStatus.NO_CONTENT)
+                .body(new CustomResponseDTO<>("success", "모집 글 삭제 성공", "삭제 완료"));
     }
 
     //  참여 승인 (RequestBody 사용)

@@ -43,7 +43,8 @@ public class NotificationController {
     @DeleteMapping("/{userId}")
     public ResponseEntity<CustomResponseDTO<String>> deleteNotification(@PathVariable Long userId) {
         notificationService.deleteNotifications(userId);
-        return ResponseEntity.ok(new CustomResponseDTO<>("success", "읽은 알림이 삭제되었습니다.", "읽은 알림 삭제 완료"));
+        return ResponseEntity.status(HttpStatus.NO_CONTENT)
+                .body(new CustomResponseDTO<>("success", "모집 글 삭제 성공", "삭제 완료"));
     }
 
 

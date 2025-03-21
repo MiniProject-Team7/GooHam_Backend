@@ -28,10 +28,11 @@ public class CommentController {
     }
 
     @DeleteMapping("/{postId}/{commentId}/{userId}")
-    public ResponseEntity<String> deleteComment(@PathVariable Long postId, @PathVariable Long commentId, @PathVariable Long userId)
+    public ResponseEntity<CustomResponseDTO<String>> deleteComment(@PathVariable Long postId, @PathVariable Long commentId, @PathVariable Long userId)
     {
         commentsService.deleteComment(postId, userId, commentId);
-        return ResponseEntity.ok("댓글이 삭제되었습니다.");
+        return ResponseEntity.status(HttpStatus.NO_CONTENT)
+                .body(new CustomResponseDTO<>("success", "댓글 삭제 성공", "삭제 완료"));
     }
 
     @PatchMapping("/{id}")
